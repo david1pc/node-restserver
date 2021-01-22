@@ -1,6 +1,13 @@
-const app = require('./src/routes/usuario.routes')
+const express = require('express')
+
+const app = express()
+
 require('./src/config/config')
+
 const mongoose = require('mongoose');
+
+// Configuración global de rutas
+app.use(require('./src/routes/index'))
 
 mongoose.connect(process.env.URLDB, {
         useNewUrlParser: true,

@@ -10,11 +10,13 @@ const _ = require('underscore')
 
 const bodyParser = require('body-parser')
 
+const { verificarToken, verificarAdminRole } = require('../middlewares/autenticacion')
+const { json } = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificarToken, (req, res) => {
 
     let desde = Number(req.query.desde)
 
@@ -41,7 +43,7 @@ app.get('/usuario', function(req, res) {
         })
 })
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificarToken, verificarAdminRole], function(req, res) {
 
     let usuarioDb = req.body
 
@@ -69,7 +71,7 @@ app.post('/usuario', function(req, res) {
 
 })
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificarToken, verificarAdminRole], function(req, res) {
 
     let id = req.params.id
 
@@ -90,7 +92,7 @@ app.put('/usuario/:id', function(req, res) {
     })
 })
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificarToken, verificarAdminRole], function(req, res) {
     let id = req.params.id;
 
     let estado = {
